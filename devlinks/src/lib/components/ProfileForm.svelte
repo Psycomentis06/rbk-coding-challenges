@@ -22,7 +22,7 @@
   </div>
   <div class="flex justify-between items-center">
     <label for="lasttname-input" class="text-neutral-500">Last Name <i>*</i></label>
-    <input bind:value={lastname} id="lastname-input" type="text" placeholder="Famiyly name" class="input input-bordered input-primary w-full max-w-xs" />
+    <input bind:value={lastname} id="lastname-input" type="text" placeholder="Family name" class="input input-bordered input-primary w-full max-w-xs" />
   </div>
   <div class="flex justify-between items-center">
     <label for="email-input" class="text-neutral-500">Email<i>*</i></label>
