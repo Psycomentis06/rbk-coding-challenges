@@ -3,7 +3,7 @@
   import { getSocialMedia, type SocialMediaNames } from "../services/social-links";
   export let socialMediaName: SocialMediaNames
   let socialMedia = getSocialMedia(socialMediaName)
-  let socialMediaUsername = ""
+  export let socialMediaUsername = ""
   export let linkIndex
   const dispatch = createEventDispatcher()
   const onRemove = () => {
