@@ -6,7 +6,7 @@
   import { getUser, saveUser, type UserLink } from '../services/user-profile';
   import { userProfileStore } from '../stores/profile';
   import { addToast } from '../services/toast';
-    import { randomId } from '../utils/rand';
+  import { randomId } from '../utils/rand';
 
   export const maxLinks = 5
 
@@ -49,6 +49,33 @@
     userLinks.splice(index,1)
     userLinks = userLinks
   }
+
+
+  const reorderLinks = (links: UserLink[], from:number, to:number) => {
+    const newArray = [...links]
+    const [removed] = newArray.splice(from, 1)
+    newArray.splice(to, 0, removed)
+    return newArray
+  }
+
+  let draggableItemFromIndex = -1
+  const onDrop = (e: DragEvent) => {
+    e.preventDefault()
+    const toIndex = e.detail
+    if (draggableItemFromIndex !==-1 && draggableItemFromIndex !== toIndex) {
+      userLinks = reorderLinks(userLinks, draggableItemFromIndex, toIndex)
+    }
+  }
+
+  const onDragStart = (e: DragEvent) => {
+    const index = (e.target as HTMLOListElement).dataset.index
+    e.dataTransfer.setData("text/plain", index.toString())
+    draggableItemFromIndex = parseInt(index)
+  }
+
+  const onDragover = (e: DragEvent) => {
+    e.preventDefault()
+  }
 </script>
 <section class="w-full min-h-screen">
   <h1 class="text-3xl font-bold">Customize your links</h1>
@@ -66,15 +93,24 @@
       {/each}
     </ul>
   </details>
-  {#each userLinks as ul, index (ul.id)}
-    <div class="my-4">
-    <LinkInput 
-        on:update={(v) => {userLinks[index].username = v.detail.username || ""}}
-        on:remove={() => removeLink(index)}
-        socialMediaName={ul.socialId}
-        socialMediaUsername={userLinks[index].username}
-        linkIndex={index+1} />
-    </div>
-  {/each}
-  <button on:click={saveUserLinks} class="btn btn-primary my-4 btn-wide normal-case block ml-auto mr-0">Save</button>
+  <ul>
+    {#each userLinks as ul, index (ul.id)}
+      <li 
+        class="my-4" 
+        draggable="true"
+        data-index={index}
+        on:dragstart={onDragStart}
+        on:dragover={onDragover}
+        on:drop={onDrop}>
+        <LinkInput 
+          on:update={(v) => {userLinks[index].username = v.detail.username || ""}}
+          on:remove={() => removeLink(index)}
+          socialMediaName={ul.socialId}
+          socialMediaUsername={userLinks[index].username}
+          linkIndex={index+1} />
+      </li>
+    {/each}
+
+  </ul>
+    <button on:click={saveUserLinks} class="btn btn-primary my-4 btn-wide normal-case block ml-auto mr-0">Save</button>
 </section>
