@@ -6,11 +6,13 @@
   import Header from './lib/components/Header.svelte';
 
 </script>
+<main>
   <Router>
-  <Header />
-  <div>
-    <Route path="/" component={Home} />
-    <Route path="/edit" component={EditProfile} />
-    <Route path="/edit/profile" component={EditLinks} />
-  </div>
+    <Header />
+    <div>
+      <Route path="/" component={Home} />
+      <Route path="/edit" component={EditProfile} />
+      <Route path="/edit/profile" component={EditLinks} />
+    </div>
   </Router>
+</main>
