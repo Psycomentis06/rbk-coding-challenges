@@ -6,15 +6,21 @@
   import { getUser, saveUser, type UserLink } from '../services/user-profile';
   import { userProfileStore } from '../stores/profile';
   import { addToast } from '../services/toast';
+    import { randomId } from '../utils/rand';
 
   export const maxLinks = 5
 
 
+  let userLinks: UserLink[] = []
+  $: userLinks = userLinks.map(l => {
+    l.id = randomId(10)
+    return l
+  })
   onMount(() => {
     showDefaultHeader.set(false)
     showEditHeader.set(true)
+    userLinks = $userProfileStore.links || []
   })
-  let userLinks: UserLink[] = []
   const saveUserLinks = () => {
     userLinks = userLinks.filter(u => u.username.trim().length > 0)
     if (userLinks.length <= 0) return
@@ -37,13 +43,10 @@
     if (userLinks.length < maxLinks) {
       userLinks.push({socialId: link.name, username: ""})
       userLinks = userLinks
-    console.log(userLinks)
     }
   }
-
   const removeLink = (index: number) => {
-    userLinks.splice(index, 1)
-    console.log(userLinks)
+    userLinks.splice(index,1)
     userLinks = userLinks
   }
 </script>
@@ -63,9 +66,14 @@
       {/each}
     </ul>
   </details>
-  {#each userLinks as ul, index }
+  {#each userLinks as ul, index (ul.id)}
     <div class="my-4">
-    <LinkInput on:update={(v) => {userLinks[index].username = v.detail.username || ""}} on:remove={() => removeLink(index)} socialMediaName={ul.socialId}  linkIndex={index+1} />
+    <LinkInput 
+        on:update={(v) => {userLinks[index].username = v.detail.username || ""}}
+        on:remove={() => removeLink(index)}
+        socialMediaName={ul.socialId}
+        socialMediaUsername={userLinks[index].username}
+        linkIndex={index+1} />
     </div>
   {/each}
   <button on:click={saveUserLinks} class="btn btn-primary my-4 btn-wide normal-case block ml-auto mr-0">Save</button>

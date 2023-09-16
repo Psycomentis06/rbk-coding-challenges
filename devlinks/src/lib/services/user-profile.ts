@@ -9,6 +9,7 @@ export interface UserProfile {
 }
 
 export interface UserLink {
+  id?: string
   socialId: SocialMediaNames
   username: string
 }
