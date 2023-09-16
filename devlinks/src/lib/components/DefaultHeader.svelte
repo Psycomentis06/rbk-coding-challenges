@@ -1,9 +1,9 @@
 <script lang="ts">
   import {Link} from 'svelte-routing'
 </script>
-<nav class="navbar bg-base-100 w-auto mx-10 mt-5 rounded-xl p-3">
+<nav class="navbar px-6 py-4">
   <div class="navbar-start">
-    <Link to="/edit/profile">
+    <Link to="/edit">
       <span class="normal-case btn btn-outline btn-primary">Back to Editor</span>
     </Link>
   </div>

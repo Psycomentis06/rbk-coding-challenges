@@ -4,7 +4,7 @@
   import {showEditHeader, showDefaultHeader} from '../stores/header'
 </script>
 
-<header class="shadow">
+<header class="shadow bg-base-100 w-auto mx-10 mt-5 rounded-xl">
   {#if $showEditHeader}
     <EditHeader />
   {/if}
