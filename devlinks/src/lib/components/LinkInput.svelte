@@ -9,9 +9,8 @@
   const onRemove = () => {
     dispatch('remove', {item: linkIndex})
   }
-  const onChange = () => {
+  $: onChange = () => {
     dispatch('update', {username: socialMediaUsername})
-    console.log(socialMediaUsername)
   }
   $: socialUrl = socialMedia.url.replace("${username}", socialMediaUsername)
 </script>
@@ -30,7 +29,7 @@
       <label for="social-username-{linkIndex}" class="label">
         <span class="label-text">Platform: <strong style="color: {socialMedia.color};">{socialMedia.fullName}</strong></span>
       </label>
-      <input on:keydown={() => onChange()} bind:value={socialMediaUsername} id="social-username-{linkIndex}" type="text" placeholder="Type here" class="input input-bordered w-full " />
+      <input on:change={() => onChange()} bind:value={socialMediaUsername} id="social-username-{linkIndex}" type="text" placeholder="Type here" class="input input-bordered w-full " />
       <label for="social-username-{linkIndex}" class="label">
         <span class="label-text-alt">{socialUrl}</span>
       </label>

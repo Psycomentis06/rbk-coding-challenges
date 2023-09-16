@@ -3,7 +3,7 @@
   import {showDefaultHeader, showEditHeader} from '../stores/header'
   import {socialMedia, type SocialMedia} from '../services/social-links'
   import LinkInput from '../components/LinkInput.svelte';
-  import { getUser, type UserLink } from '../services/user-profile';
+  import { getUser, saveUser, type UserLink } from '../services/user-profile';
   import { userProfileStore } from '../stores/profile';
   import { addToast } from '../services/toast';
 
@@ -16,6 +16,7 @@
   })
   let userLinks: UserLink[] = []
   const saveUserLinks = () => {
+    userLinks = userLinks.filter(u => u.username.trim().length > 0)
     if (userLinks.length <= 0) return
     let user = getUser()
     if (user) {
@@ -26,6 +27,7 @@
       }
     }
     userProfileStore.set(user)
+    saveUser(user)
     addToast({
       message: "Your changes have been successfully saved!",
       closeBtn: true
@@ -35,11 +37,13 @@
     if (userLinks.length < maxLinks) {
       userLinks.push({socialId: link.name, username: ""})
       userLinks = userLinks
+    console.log(userLinks)
     }
   }
 
   const removeLink = (index: number) => {
     userLinks.splice(index, 1)
+    console.log(userLinks)
     userLinks = userLinks
   }
 </script>

@@ -7,21 +7,15 @@
   export let socialMediaName: SocialMediaNames;
   export let username: string;
 
-  const socialMedia = getSocialMedia(socialMediaName);
+  $: socialMedia = getSocialMedia(socialMediaName);
   $: socialMediaBrandColor = socialMedia?.color || "#000000";
   $: borderTextHoverColor = 'white'
 
-  if (!socialMedia) {
-    throw new Error(`Social media ${socialMediaName} not found`);
-  }
-
-  function getUrl() {
-    return socialMedia?.url.replace("${username}", username);
-  }
+  $:userSocialUrl = socialMedia?.url.replace("${username}", username);
 
   </script>
 <a
-  href={getUrl()}
+  href={userSocialUrl}
   style="background-color: {socialMediaBrandColor}; color: {borderTextHoverColor};"
   target="_blank"
   class="social-link w-full flex justify-between btn capitalize shadow"
